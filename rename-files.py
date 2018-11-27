@@ -1,40 +1,25 @@
+import glob
 import os
 
-directory = r"D:\Dropbox\Files to rename"
-str_to_remove = "(100%) "
+# directory
+search_dir = "D:\\Projects\\!Courses\\FreeCodeCamp\\2 Javascript Algorithms And Data Structures Certification\\5 Basic Data Structures\\"
 
-all_files = []
+# get files to rename with a certain extension (*.json)
+files = glob.glob(search_dir + "*.*")
 
-
-def walk(top, maxdepth):
-    dirs, nondirs = [], []
-    for name in os.listdir(top):
-        (dirs if os.path.isdir(os.path.join(top, name)) else nondirs).append(name)
-    yield top, dirs, nondirs
-    if maxdepth > 1:
-        for name in dirs:
-            for x in walk(os.path.join(top, name), maxdepth - 1):
-                yield x
+# sorts files by time & date
+files.sort(key=os.path.getmtime)
 
 
-if __name__ == "__main__":
-    for x in walk(directory, 1):
-        all_files.append(x)
+# how to rename files, in this case it adds a prefix number but it can be anything
+i = 1
+prefix = ""
 
-    zip_list = all_files[0][2]
+for entry in files:
+    prefix = "0" + str(i) + " " if i < 10 else str(i) + " "
 
-    for z in zip_list:
-        current_file_name = str(z)
+    new_name = entry.replace(search_dir, search_dir + prefix)
+    print(new_name)
+    os.rename(entry, new_name)
 
-        print(z)
-
-        if current_file_name.startswith(str_to_remove):
-            os.rename(
-                directory + "\\" + current_file_name,
-                directory + "\\" + current_file_name[len(str_to_remove) :],
-            )
-        elif current_file_name.endswith()(str_to_remove):
-            os.rename(
-                directory + "\\" + current_file_name,
-                directory + "\\" + current_file_name[: len(str_to_remove)],
-            )
+    i += 1
