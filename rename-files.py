@@ -1,25 +1,29 @@
 import glob
 import os
 
-# directory
-search_dir = "D:\\Projects\\!Courses\\FreeCodeCamp\\2 Javascript Algorithms And Data Structures Certification\\5 Basic Data Structures\\"
 
-# get files to rename with a certain extension (*.json)
-files = glob.glob(search_dir + "*.*")
+def rename_files(dir):
+    # get files to rename with a certain extension (*.json)
+    files = glob.glob(search_dir + "*.*")
 
-# sorts files by time & date
-files.sort(key=os.path.getmtime)
+    # sorts files by time & date
+    files.sort(key=os.path.getmtime)
+
+    # how to rename files, in this case it adds a prefix number but it can be anything
+    i = 1
+    prefix = ""
+
+    for entry in files:
+        prefix = "0" + str(i) + " " if i < 10 else str(i) + " "
+
+        new_name = entry.replace(search_dir, search_dir + prefix)
+        print(new_name)
+        os.rename(entry, new_name)
+
+        i += 1
 
 
-# how to rename files, in this case it adds a prefix number but it can be anything
-i = 1
-prefix = ""
+if __name__ == "__main__":
+    search_dir = "D:\\Projects\\!Courses\\FreeCodeCamp\\2 Javascript Algorithms And Data Structures Certification\\9 Intermediate Algorithm Scripting\\"
 
-for entry in files:
-    prefix = "0" + str(i) + " " if i < 10 else str(i) + " "
-
-    new_name = entry.replace(search_dir, search_dir + prefix)
-    print(new_name)
-    os.rename(entry, new_name)
-
-    i += 1
+    rename_files(search_dir)
